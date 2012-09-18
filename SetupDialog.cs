@@ -37,14 +37,14 @@ namespace vlcPlugIn
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
 			foreach(Channel ch in channels){
-				if(ch.OutputChannel >= startChannel){
+				//if(ch.OutputChannel >= startChannel){
 					cmb_Channel.Items.Add(ch.Name);
-				}
+				//}
 			}
 			
 			_trackNodes = ctxNode.SelectNodes("Settings/Track");
 						
-			cmb_Channel.SelectedIndex = Convert.ToInt16(ctxNode.SelectSingleNode("Settings/ChannelIndex").InnerText);
+			cmb_Channel.SelectedIndex = startChannel;
 			if(vlcHost == ""){
 				txt_vlcHost.Text="http://localhost";
 			}else {

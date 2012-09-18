@@ -59,9 +59,10 @@ namespace vlcPlugIn
 			this.m_SetupData = setupData;
 			this.m_SetupNode = setupNode;
 			this.m_Channels = executableObject.Channels;
-			
 			if(this.m_SetupNode.SelectSingleNode("Settings") == null){
+				
 				Xml.GetNodeAlways(this.m_SetupNode,"Settings");
+				
 				this.m_SelectedIndex = 0;
 				this.m_vlcHost="";//set to nothing to use default
 				this.m_vlcPort="";//set to nothing to use default
@@ -144,11 +145,8 @@ namespace vlcPlugIn
 			int startChannel;
 			int startVLCID = 5;
 			
-			/*if(this.m_SelectedIndex != 0){
-				startChannel = this.m_SelectedIndex;
-			}else{*/
-				startChannel = Convert.ToInt16(this.m_SetupNode.Attributes["from"].Value)-1;
-			/*}*/
+			
+			startChannel = this.m_SelectedIndex;
 			
 			SetupDialog dialog = new SetupDialog(this.m_Channels,startChannel,this.m_vlcHost,this.m_vlcPort,this.m_playlistFile,this.m_SetupNode);
 			
