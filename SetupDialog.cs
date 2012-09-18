@@ -44,7 +44,7 @@ namespace vlcPlugIn
 			
 			_trackNodes = ctxNode.SelectNodes("Settings/Track");
 						
-			cmb_Channel.SelectedIndex = 0;
+			cmb_Channel.SelectedIndex = Convert.ToInt16(ctxNode.SelectSingleNode("Settings/ChannelIndex").InnerText);
 			if(vlcHost == ""){
 				txt_vlcHost.Text="http://localhost";
 			}else {

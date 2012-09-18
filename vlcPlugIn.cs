@@ -144,11 +144,11 @@ namespace vlcPlugIn
 			int startChannel;
 			int startVLCID = 5;
 			
-			if(this.m_SelectedIndex != 0){
+			/*if(this.m_SelectedIndex != 0){
 				startChannel = this.m_SelectedIndex;
-			}else{
+			}else{*/
 				startChannel = Convert.ToInt16(this.m_SetupNode.Attributes["from"].Value)-1;
-			}
+			/*}*/
 			
 			SetupDialog dialog = new SetupDialog(this.m_Channels,startChannel,this.m_vlcHost,this.m_vlcPort,this.m_playlistFile,this.m_SetupNode);
 			
