@@ -1,0 +1,1 @@
+c:\progra~1\VideoLAN\VLC\vlc --intf http --extraint dummy --dummy-quiet test2.xspf
