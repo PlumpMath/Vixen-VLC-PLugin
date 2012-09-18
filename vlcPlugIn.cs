@@ -156,6 +156,7 @@ namespace vlcPlugIn
 				string t_vlcPort = dialog.VLCPort;
 				string t_vlcPlaylistFile = dialog.VLCPlaylistFile;
 				pList = dialog.playList;
+				
 				//get the node of where settings is
 				XmlNode contextNode = this.m_SetupNode.SelectSingleNode("Settings");
 				contextNode.RemoveAll(); //remove children of settings
@@ -169,11 +170,11 @@ namespace vlcPlugIn
 				//as far as I can tell the http interface of VLC starts tracks on 5
 				//so we will set a variable to 5 and then increment to get the vlc id
 				pList.ForEach(delegate(PlaylistItems pli){
-				              	XmlNode x_plaListNode = Xml.SetNewValue(contextNode,"Track",startVLCID.ToString());
+			    	XmlNode x_plaListNode = Xml.SetNewValue(contextNode,"Track",startVLCID.ToString());
 					Xml.SetAttribute(x_plaListNode,"StartIntensity",pli.trgStart.ToString()); //create an attribute of the child node
 					Xml.SetAttribute(x_plaListNode,"StopIntensity",pli.trgStop.ToString()); //create an attribute of the child node
 					Xml.SetAttribute(x_plaListNode,"FileName",pli.FileName.ToString()); //create an attribute of the child node
-					
+			    
 					startVLCID++;
 				});
 				//Xml.SetAttribute(newNode,"Attribute","somehing"); //create an attribute of the child node

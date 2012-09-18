@@ -86,7 +86,29 @@ namespace vlcPlugIn
 			get{
 				List<PlaylistItems> pItems = new List<PlaylistItems>();
 				foreach (DataGridViewRow r in dataGridView1.Rows){
-					pItems.Add(new PlaylistItems(Convert.ToInt16(r.Cells[0].Value.ToString()),Convert.ToInt16(r.Cells[1].Value.ToString()),r.Cells[2].Value.ToString(),5));	
+					int startTrg,stopTrg;
+					/*using (StreamWriter sw = System.IO.File.AppendText(@"C:\trg.txt")){
+						sw.WriteLine(r.Cells[0].FormattedValue.ToString()+"IN LOOP::cell value::");
+	    				}
+					*/
+					//if the start value in the cell is null make it -1 so it never turns on
+					//we still need it in our seq or profile so the vlc id does not get out of whack
+					if(r.Cells[0].FormattedValue.ToString() == ""){
+						startTrg = -1;
+				   	}else{
+						startTrg = Convert.ToInt16(r.Cells[0].Value.ToString());
+				   	}
+					   
+					//if the stop value in the cell is null make it -1 so it never turns on
+					//we still need it in our seq or profile so the vlc id does not get out of whack
+					if(r.Cells[1].FormattedValue.ToString() == ""){
+						stopTrg = -1;
+				   	}else{
+						stopTrg = Convert.ToInt16(r.Cells[1].Value.ToString());
+				   	}
+					pItems.Add(new PlaylistItems(startTrg,stopTrg,r.Cells[2].Value.ToString(),5));
+					
+					
 				}
 				return pItems;
 			}
@@ -186,8 +208,8 @@ namespace vlcPlugIn
 	    				/*using (StreamWriter sw = System.IO.File.AppendText(@"C:\trg.txt")){
 		    				sw.WriteLine("NODE::"+idx+"::"+plTrack.Attributes["StartIntensity"].Value+"::"+plTrack.Attributes["StopIntensity"].Value);
 	    				}*/
-	    				dataGridView1.Rows[idx].Cells[0].Value = plTrack.Attributes["StartIntensity"].Value;
-	    				dataGridView1.Rows[idx].Cells[1].Value = plTrack.Attributes["StopIntensity"].Value;
+	    				dataGridView1.Rows[idx].Cells[0].Value = plTrack.Attributes["StartIntensity"].Value=="-1"?"":plTrack.Attributes["StartIntensity"].Value;
+	    				dataGridView1.Rows[idx].Cells[1].Value = plTrack.Attributes["StopIntensity"].Value=="-1"?"":plTrack.Attributes["StopIntensity"].Value;
 	    				
 						idx++;	    				
 					}
