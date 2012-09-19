@@ -80,19 +80,21 @@ namespace vlcPlugIn
 				(HttpWebRequest)WebRequest.Create(uriPlayStr);
 			HttpWebResponse responsePlay = (HttpWebResponse)reqPlay.GetResponse();
 			
+			this._vlcID = 5;
 			PL_PauseSeq();
 			
 		}
 		
 		public void PL_PauseSeq(){
+			using (StreamWriter sw = System.IO.File.AppendText(@"C:\stop.txt")) 
+		        {
+				sw.WriteLine("ID::"+this._vlcID.ToString());
+		        }  
 			if(this._vlcID ==5){ //vlcid 5 should be pause seq
 				System.Threading.Thread.Sleep(500);
 				//pause it
 				uriPauseStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PAUSE_COMMAND+"&id="+5;
-				/*using (StreamWriter sw = System.IO.File.AppendText(@"C:\stop.txt")) 
-		        {
-					sw.WriteLine(uriPauseStr);
-		        }   */
+				 
 				HttpWebRequest reqPause = 
 					(HttpWebRequest)WebRequest.Create(uriPauseStr);
 				HttpWebResponse responsePause = (HttpWebResponse)reqPause.GetResponse();
