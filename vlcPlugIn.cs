@@ -26,6 +26,7 @@ namespace vlcPlugIn
 		private string m_vlcHost;
 		private string m_vlcPort;
 		private string m_playlistFile;
+		private string m_vlcStartID;
 		private List<PlaylistItems> pList = new List<PlaylistItems>();
 		
 		public HardwareMap[] HardwareMap {
@@ -67,17 +68,27 @@ namespace vlcPlugIn
 				this.m_vlcHost="";//set to nothing to use default
 				this.m_vlcPort="";//set to nothing to use default
 				this.m_playlistFile="";
+				this.m_vlcStartID="";
 			} else {
 				XmlNode chNode = this.m_SetupNode.SelectSingleNode("Settings/ChannelIndex");
 				XmlNode vlcHostNode = this.m_SetupNode.SelectSingleNode("Settings/VLCHost");
 				XmlNode vlcPortNode = this.m_SetupNode.SelectSingleNode("Settings/VLCPort");
 				XmlNode vlcPlaylistNode = this.m_SetupNode.SelectSingleNode("Settings/VLCPlaylist");
+				
 				XmlNodeList trackNodes;
 				
 				this.m_SelectedIndex = Convert.ToInt16(chNode.InnerText);
 				this.m_vlcHost = Convert.ToString(vlcHostNode.InnerText);
 				this.m_vlcPort = Convert.ToString(vlcPortNode.InnerText);
 				this.m_playlistFile = Convert.ToString(vlcPlaylistNode.InnerText);
+				
+				//if the attribute doe not exist in the node create it otherwise get the value from it
+				if(vlcPlaylistNode.Attributes["StartID"] == null){
+					Xml.SetAttribute(vlcPlaylistNode,"StartID","");
+				} else {
+					this.m_vlcStartID = Convert.ToString(vlcPlaylistNode.Attributes["StartID"].Value);
+				}
+				
 				trackNodes = this.m_SetupNode.SelectNodes("Settings/Track");
 				foreach (XmlNode plTrack in trackNodes){
 					this.pList.Add(
@@ -116,12 +127,14 @@ namespace vlcPlugIn
 		              		vlcHttp.VLCHost = this.m_vlcHost;
 		              		vlcHttp.VLCPort = this.m_vlcPort;
 		              		vlcHttp.VLCId = pli.vlcID;
-		              		vlcHttp.PL_Play();
+		              		vlcHttp.VLCStartID = Convert.ToInt16(this.m_vlcStartID);
+		              		vlcHttp.PL_Play();		              		
 			            } else if (channelValues[m_SelectedIndex].ToString() == 
 			                   	           Math.Round((double)(((float)pli.trgStop/100)*255.0), 0, MidpointRounding.AwayFromZero).ToString()){
 	                   		vlcHttp.VLCHost = this.m_vlcHost;
 		              		vlcHttp.VLCPort = this.m_vlcPort;
 		              		vlcHttp.VLCId = pli.vlcID;
+		              		vlcHttp.VLCStartID = Convert.ToInt16(this.m_vlcStartID);
 		              		vlcHttp.PL_Stop();
 	                   	}
 			});
@@ -143,18 +156,21 @@ namespace vlcPlugIn
 		public void Setup()
 		{
 			int startChannel;
-			int startVLCID = 5;
+			int startVLCID = 0;
 			
 			
 			startChannel = this.m_SelectedIndex;
 			
-			SetupDialog dialog = new SetupDialog(this.m_Channels,startChannel,this.m_vlcHost,this.m_vlcPort,this.m_playlistFile,this.m_SetupNode);
+			SetupDialog dialog = new SetupDialog(this.m_Channels,startChannel,this.m_vlcHost,
+			                                     this.m_vlcPort,this.m_playlistFile,
+			                                     this.m_SetupNode,this.m_vlcStartID);
 			
 			if(dialog.ShowDialog() == DialogResult.OK){
 				int selection = dialog.SelectedChannel;
 				string t_vlcHost = dialog.VLCHost;
 				string t_vlcPort = dialog.VLCPort;
 				string t_vlcPlaylistFile = dialog.VLCPlaylistFile;
+				string t_vlcStartID = dialog.VLCStartID;
 				pList = dialog.playList;
 				
 				//get the node of where settings is
@@ -167,8 +183,14 @@ namespace vlcPlugIn
 				XmlNode x_vlcPortNode = Xml.SetNewValue(contextNode,"VLCPort",t_vlcPort.ToString());
 				XmlNode x_vlcPlaylistFileNode = Xml.SetNewValue(contextNode,"VLCPlaylist",t_vlcPlaylistFile.ToString());
 				
-				//as far as I can tell the http interface of VLC starts tracks on 5
-				//so we will set a variable to 5 and then increment to get the vlc id
+				//set StartID attribute of playlist node to what the user entered
+				Xml.SetAttribute(x_vlcPlaylistFileNode,"StartID",t_vlcStartID);
+				
+				//set local var for start ID to what user entered
+				startVLCID = Convert.ToInt16(t_vlcStartID);
+				
+				//user sets start id
+				//so we will set a variable to what the user entered and then increment to get the vlc id
 				pList.ForEach(delegate(PlaylistItems pli){
 			    	XmlNode x_plaListNode = Xml.SetNewValue(contextNode,"Track",startVLCID.ToString());
 					Xml.SetAttribute(x_plaListNode,"StartIntensity",pli.trgStart.ToString()); //create an attribute of the child node

@@ -26,7 +26,7 @@ namespace vlcPlugIn
 		private string _VLCPlaylistFile;
 		private XmlNodeList _trackNodes;
 		private int _firstRun;
-		public SetupDialog(List<Channel> channels, int startChannel,string vlcHost, string vlcPort, string vlcPlaylistFile,XmlNode ctxNode)
+		public SetupDialog(List<Channel> channels, int startChannel,string vlcHost, string vlcPort, string vlcPlaylistFile,XmlNode ctxNode,string vlcStartID)
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
@@ -57,6 +57,12 @@ namespace vlcPlugIn
 				txt_vlcPort.Text=vlcPort;
 			}
 			
+			if(vlcStartID ==""){
+				txt_vlcStartID.Text = "5";
+			}else{
+				txt_vlcStartID.Text=vlcStartID;
+			}
+			
 			if(vlcPlaylistFile!=""){
 				string path = vlcPlaylistFile; // The Path to the .Xml file
 				_VLCPlaylistFile = vlcPlaylistFile;
@@ -80,6 +86,10 @@ namespace vlcPlugIn
 
 		public string VLCPlaylistFile{
 			get{return _VLCPlaylistFile;}
+		}
+		
+		public string VLCStartID{
+			get{return txt_vlcStartID.Text;}
 		}
 		
 		public List<PlaylistItems> playList{
@@ -217,5 +227,10 @@ namespace vlcPlugIn
 	    		}
 		}
 		
+		
+		void TextBox1TextChanged(object sender, EventArgs e)
+		{
+			
+		}
 	}
 }

@@ -27,13 +27,15 @@ namespace vlcPlugIn
 		private string uriPlayStr;
 		private string uriPauseStr;
 		private int _vlcID;
+		private int _vlcStartID;
 		
 		
 		//override ctor
-		public VLCHttpControl(string vlcHost,string vlcPort, int vlcID){
+		public VLCHttpControl(string vlcHost,string vlcPort, int vlcID,int vlcStartID){
 			this._vlcHost = vlcHost;
 			this._vlcPort = vlcPort;
 			this._vlcID = vlcID;
+			this._vlcStartID = vlcStartID;
 		}
 			
 		public string VLCHost{
@@ -44,6 +46,11 @@ namespace vlcPlugIn
 		public string VLCPort{
 			set{_vlcPort = value;}
 			get{return _vlcPort;}
+		}
+		
+		public int VLCStartID{
+			set{_vlcStartID = value;}
+			get{return _vlcStartID;}
 		}
 		
 		/*public string VLCCommand{
@@ -71,7 +78,7 @@ namespace vlcPlugIn
 		}
 		public void PL_Stop(){
 			//play first track (should be pause track) then pause it
-			uriPlayStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PLAY_COMMAND+"&id="+5;
+			uriPlayStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PLAY_COMMAND+"&id="+this._vlcStartID;
 			/*using (StreamWriter sw = System.IO.File.AppendText(@"C:\stop.txt")) 
 	        {
 				sw.WriteLine(uriPlayStr);
@@ -80,20 +87,20 @@ namespace vlcPlugIn
 				(HttpWebRequest)WebRequest.Create(uriPlayStr);
 			HttpWebResponse responsePlay = (HttpWebResponse)reqPlay.GetResponse();
 			
-			this._vlcID = 5;
+			this._vlcID = this._vlcStartID;
 			PL_PauseSeq();
 			
 		}
 		
 		public void PL_PauseSeq(){
-			using (StreamWriter sw = System.IO.File.AppendText(@"C:\stop.txt")) 
+			/*using (StreamWriter sw = System.IO.File.AppendText(@"C:\stop.txt")) 
 		        {
 				sw.WriteLine("ID::"+this._vlcID.ToString());
-		        }  
-			if(this._vlcID ==5){ //vlcid 5 should be pause seq
+		        }  */
+			if(this._vlcID == this._vlcStartID){ //start id should be pause seq
 				System.Threading.Thread.Sleep(500);
 				//pause it
-				uriPauseStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PAUSE_COMMAND+"&id="+5;
+				uriPauseStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PAUSE_COMMAND+"&id="+this._vlcStartID;
 				 
 				HttpWebRequest reqPause = 
 					(HttpWebRequest)WebRequest.Create(uriPauseStr);

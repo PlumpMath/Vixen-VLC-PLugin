@@ -47,6 +47,9 @@ namespace vlcPlugIn
 			this.txt_vlcHost = new System.Windows.Forms.TextBox();
 			this.lbl_vlcPort = new System.Windows.Forms.Label();
 			this.txt_vlcPort = new System.Windows.Forms.TextBox();
+			this.lbl_playlistStartID = new System.Windows.Forms.Label();
+			this.txt_vlcStartID = new System.Windows.Forms.TextBox();
+			this.lbl_findID = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataView1)).BeginInit();
 			this.SuspendLayout();
@@ -54,7 +57,7 @@ namespace vlcPlugIn
 			// btn_OK
 			// 
 			this.btn_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btn_OK.Location = new System.Drawing.Point(744, 324);
+			this.btn_OK.Location = new System.Drawing.Point(731, 324);
 			this.btn_OK.Name = "btn_OK";
 			this.btn_OK.Size = new System.Drawing.Size(75, 23);
 			this.btn_OK.TabIndex = 0;
@@ -85,7 +88,7 @@ namespace vlcPlugIn
 			// 
 			// btn_openPlaylist
 			// 
-			this.btn_openPlaylist.Location = new System.Drawing.Point(723, 75);
+			this.btn_openPlaylist.Location = new System.Drawing.Point(11, 104);
 			this.btn_openPlaylist.Name = "btn_openPlaylist";
 			this.btn_openPlaylist.Size = new System.Drawing.Size(96, 23);
 			this.btn_openPlaylist.TabIndex = 3;
@@ -99,9 +102,9 @@ namespace vlcPlugIn
 			this.dataGridView1.AllowUserToDeleteRows = false;
 			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-			this.dataGridView1.Location = new System.Drawing.Point(11, 104);
+			this.dataGridView1.Location = new System.Drawing.Point(113, 104);
 			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(808, 189);
+			this.dataGridView1.Size = new System.Drawing.Size(693, 189);
 			this.dataGridView1.TabIndex = 4;
 			// 
 			// dataView1
@@ -126,7 +129,7 @@ namespace vlcPlugIn
 			// 
 			// lbl_vlcPort
 			// 
-			this.lbl_vlcPort.Location = new System.Drawing.Point(53, 49);
+			this.lbl_vlcPort.Location = new System.Drawing.Point(53, 42);
 			this.lbl_vlcPort.Name = "lbl_vlcPort";
 			this.lbl_vlcPort.Size = new System.Drawing.Size(54, 23);
 			this.lbl_vlcPort.TabIndex = 7;
@@ -134,16 +137,44 @@ namespace vlcPlugIn
 			// 
 			// txt_vlcPort
 			// 
-			this.txt_vlcPort.Location = new System.Drawing.Point(113, 46);
+			this.txt_vlcPort.Location = new System.Drawing.Point(113, 39);
 			this.txt_vlcPort.Name = "txt_vlcPort";
 			this.txt_vlcPort.Size = new System.Drawing.Size(100, 20);
 			this.txt_vlcPort.TabIndex = 8;
+			// 
+			// lbl_playlistStartID
+			// 
+			this.lbl_playlistStartID.Location = new System.Drawing.Point(7, 71);
+			this.lbl_playlistStartID.Name = "lbl_playlistStartID";
+			this.lbl_playlistStartID.Size = new System.Drawing.Size(100, 23);
+			this.lbl_playlistStartID.TabIndex = 9;
+			this.lbl_playlistStartID.Text = "playlist.xml Start ID:";
+			// 
+			// txt_vlcStartID
+			// 
+			this.txt_vlcStartID.Location = new System.Drawing.Point(113, 68);
+			this.txt_vlcStartID.Name = "txt_vlcStartID";
+			this.txt_vlcStartID.Size = new System.Drawing.Size(100, 20);
+			this.txt_vlcStartID.TabIndex = 10;
+			this.txt_vlcStartID.TextChanged += new System.EventHandler(this.TextBox1TextChanged);
+			// 
+			// lbl_findID
+			// 
+			this.lbl_findID.Location = new System.Drawing.Point(220, 71);
+			this.lbl_findID.Name = "lbl_findID";
+			this.lbl_findID.Size = new System.Drawing.Size(586, 23);
+			this.lbl_findID.TabIndex = 11;
+			this.lbl_findID.Text = "http://<host IP>:<host port>/requests/playist.xml (then look at the first leaf id" +
+			" under the \"playlist\" node)";
 			// 
 			// SetupDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(831, 359);
+			this.Controls.Add(this.lbl_findID);
+			this.Controls.Add(this.txt_vlcStartID);
+			this.Controls.Add(this.lbl_playlistStartID);
 			this.Controls.Add(this.txt_vlcPort);
 			this.Controls.Add(this.lbl_vlcPort);
 			this.Controls.Add(this.txt_vlcHost);
@@ -161,6 +192,9 @@ namespace vlcPlugIn
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Label lbl_findID;
+		private System.Windows.Forms.TextBox txt_vlcStartID;
+		private System.Windows.Forms.Label lbl_playlistStartID;
 		private System.Windows.Forms.TextBox txt_vlcPort;
 		private System.Windows.Forms.Label lbl_vlcPort;
 		private System.Windows.Forms.TextBox txt_vlcHost;
