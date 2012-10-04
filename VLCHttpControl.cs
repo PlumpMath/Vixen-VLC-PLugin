@@ -72,7 +72,12 @@ namespace vlcPlugIn
 			
 			HttpWebRequest req = 
 				(HttpWebRequest)WebRequest.Create(uriStr);
-			HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+			try{
+				HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+			}
+			catch (WebException ex){
+					
+			}
 			
 			PL_PauseSeq();
 		}
@@ -85,8 +90,12 @@ namespace vlcPlugIn
 	        }  */ 
 			HttpWebRequest reqPlay = 
 				(HttpWebRequest)WebRequest.Create(uriPlayStr);
-			HttpWebResponse responsePlay = (HttpWebResponse)reqPlay.GetResponse();
-			
+			try{
+				HttpWebResponse responsePlay = (HttpWebResponse)reqPlay.GetResponse();
+			}
+			catch (WebException ex){
+					
+			}
 			this._vlcID = this._vlcStartID;
 			PL_PauseSeq();
 			
@@ -101,10 +110,16 @@ namespace vlcPlugIn
 				System.Threading.Thread.Sleep(500);
 				//pause it
 				uriPauseStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PAUSE_COMMAND+"&id="+this._vlcStartID;
-				 
+				
 				HttpWebRequest reqPause = 
 					(HttpWebRequest)WebRequest.Create(uriPauseStr);
-				HttpWebResponse responsePause = (HttpWebResponse)reqPause.GetResponse();
+				try{
+					HttpWebResponse responsePause = (HttpWebResponse)reqPause.GetResponse();
+				}
+				catch (WebException ex){
+					
+				}
+				
 			}
 		}
 	}
