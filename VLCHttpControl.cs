@@ -69,15 +69,17 @@ namespace vlcPlugIn
 	        {
 				sw.WriteLine(uriStr);
 	        }  */ 
-			
-			HttpWebRequest req = 
-				(HttpWebRequest)WebRequest.Create(uriStr);
-			try{
-				HttpWebResponse response = (HttpWebResponse)req.GetResponse();
-			}
-			catch (WebException ex){
-					
-			}
+			    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uriStr);
+			    req.BeginGetResponse(new AsyncCallback(FinishWebRequest),req);
+				/*try{
+					HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+				}
+				catch (WebException ex){
+					using (StreamWriter sw = System.IO.File.AppendText(@"C:\start.txt")) 
+			        {
+						sw.WriteLine("PL_Play::"+ex);
+			        } 
+				}*/
 			
 			PL_PauseSeq();
 		}
@@ -88,14 +90,18 @@ namespace vlcPlugIn
 	        {
 				sw.WriteLine(uriPlayStr);
 	        }  */ 
-			HttpWebRequest reqPlay = 
-				(HttpWebRequest)WebRequest.Create(uriPlayStr);
-			try{
-				HttpWebResponse responsePlay = (HttpWebResponse)reqPlay.GetResponse();
-			}
-			catch (WebException ex){
-					
-			}
+				HttpWebRequest reqPlay = 
+					(HttpWebRequest)WebRequest.Create(uriPlayStr);
+				reqPlay.BeginGetResponse(new AsyncCallback(FinishWebRequest),reqPlay);
+				/*try{
+					HttpWebResponse responsePlay = (HttpWebResponse)reqPlay.GetResponse();
+				}
+				catch (WebException ex){
+					using (StreamWriter sw = System.IO.File.AppendText(@"C:\start.txt")) 
+			        {
+						sw.WriteLine("PL_Stop::"+ex);
+			        } 	
+				}*/
 			this._vlcID = this._vlcStartID;
 			PL_PauseSeq();
 			
@@ -111,15 +117,34 @@ namespace vlcPlugIn
 				//pause it
 				uriPauseStr = this._vlcHost+":"+this._vlcPort+REMOTE_FILE+PAUSE_COMMAND+"&id="+this._vlcStartID;
 				
-				HttpWebRequest reqPause = 
-					(HttpWebRequest)WebRequest.Create(uriPauseStr);
-				try{
-					HttpWebResponse responsePause = (HttpWebResponse)reqPause.GetResponse();
-				}
-				catch (WebException ex){
-					
-				}
+		
+	    			HttpWebRequest reqPause = 
+						(HttpWebRequest)WebRequest.Create(uriPauseStr);
+	    			reqPause.BeginGetResponse(new AsyncCallback(FinishWebRequest),reqPause);
+					/*try{
+						HttpWebResponse responsePause = (HttpWebResponse)reqPause.GetResponse();
+					}
+					catch (WebException ex){
+						using (StreamWriter sw = System.IO.File.AppendText(@"C:\start.txt")) 
+				        {
+							sw.WriteLine("PL_PauseSeq::"+ex);
+				        } 
+					}*/
+
 				
+				
+			}
+		}
+		public void FinishWebRequest(IAsyncResult result)
+		{
+			try{
+		    	HttpWebResponse response = (result.AsyncState as HttpWebRequest).EndGetResponse(result) as HttpWebResponse;
+		    }
+			catch (WebException ex){
+				using (StreamWriter sw = System.IO.File.AppendText(@"C:\start.txt")) 
+		        {
+					sw.WriteLine("FinishWebRequest::"+ex);
+		        } 
 			}
 		}
 	}

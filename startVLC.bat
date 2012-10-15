@@ -1,1 +1,1 @@
-c:\progra~1\VideoLAN\VLC\vlc --intf http --extraint dummy --dummy-quiet test2.xspf
+c:\progra~1\VideoLAN\VLC\vlc --intf http --extraint dummy --dummy-quiet D:\Users\james.darschewski.ARCDOMAIN\Desktop\halloween_2012.xspf
